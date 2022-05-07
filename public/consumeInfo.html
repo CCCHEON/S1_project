@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>消费记录查询</title>
+	</head>
+	<body>
+		<h4>消费管理系统</h4>
+		<hr>
+		<span>消费记录查询</span>
+			<span>[<span>
+			<a href="./consumeAdd.html">录入消费信息</a>
+			<span>]<span><br>
+			<input type="button" id="btn" value="正在查询商品数据..." style="border:0">
+		<script>
+			//刷新页面即将span语句替换成查询的所有商品数据
+			btn.onclick=function(){
+				const xhr=new XMLHttpRequest()
+				xhr.open("GET","/v2/product/select")
+				xhr.onload=function(){
+					let result=xhr.responseText
+					msg.innerHTML=result
+				}
+				xhr.send(result)
+			}
+		</script>
+	</body>
+</html>
