@@ -6,7 +6,7 @@ module.exports=router
 router.post("/add",(req,res)=>{
 	//res.send("插入数据成功")
 	const m=req.body
-	//console.log(m)
+	console.log(m)
 	const n="insert into consumeInfo set ?"
 	pool.query(n,[m],(err,result)=>{
 		if(err){

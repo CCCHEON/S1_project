@@ -5,23 +5,28 @@
 		<title>消费记录查询</title>
 	</head>
 	<body>
-		<h4>消费管理系统</h4>
+		<h3 style="text-align:center;">消费管理系统</h3>
 		<hr>
-		<span>消费记录查询</span>
+		<span style="text-align:center">消费记录查询</span>
 			<span>[<span>
 			<a href="./consumeAdd.html">录入消费信息</a>
 			<span>]<span><br>
-			<input type="button" id="btn" value="正在查询商品数据..." style="border:0">
+			<span id="msg">消费信息查询中...</span>
 		<script>
-			//刷新页面即将span语句替换成查询的所有商品数据
-			btn.onclick=function(){
+			//页面即将span语句替换成查询的所有商品数据,并渲染成表格    改为window.onload
+			window.onload=function(){
 				const xhr=new XMLHttpRequest()
 				xhr.open("GET","/v2/product/select")
+				xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded;charset=UTF-8')
 				xhr.onload=function(){
 					let result=xhr.responseText
+					//验证result的值
+					//console.log(result)
 					msg.innerHTML=result
+					
+					//将查询到的数据渲染成表格
 				}
-				xhr.send(result)
+				xhr.send()
 			}
 		</script>
 	</body>
