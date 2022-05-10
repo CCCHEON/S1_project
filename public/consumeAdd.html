@@ -4,66 +4,72 @@
 		<meta charset="utf-8">
 		<title>录入消费信息</title>
 	</head>
-	<body>
-		<h4 align="center">消费管理系统</h4>
-		<hr>
-			<table border="1px" style="border-collapse:collapse" align="center">
-				<tr>
-					<td colspan="2" align="center" style="color:blue">请录入消费信息</td>
-				</tr>
-				<tr>
-					<td align="right">商品名称:</td>
-					<td>
-						<input type="text" name="consumeName" id="in1">
-						<span id="msg1" style="font-size:10px;color:red"></span>					
-					</td>
-				</tr>
-				<tr>
-					<td align="right" width="100px">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格:</td>
-					<td width="280px">
-						<input type="text" name="consumePrice" id="in2"> 
-						<span id="msg2" style="font-size:10px;color:red">(单位:元)</span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量:</td>
-					<td>
-						<input type="number" name="consumeCount" id="in3">
-						<span id="msg3" style="font-size:10px;color:red"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">消费类型:</td>
-					<td>
-						<select name="consumeType" style="width:170px;" id="in4">
-							<option value="生活消费" selected>生活消费</option>
-							<option value="百货消费">百货消费</option>
-							<option value="日常消费">日常消费</option>
-						</select>
-						<span id="msg4"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">消费日期:</td>
-					<td>
-						<input type="date" name="consumeDate" style="width:165px;" id="in5">
-						<span id="msg5" style="font-size:10px;color:red"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">备注信息:</td>
-					<td>
-						<textarea name="remark" id="in6" cols="22" rows="1" style="resize:none"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" align="center">
-						<input type="submit" value="录入" id="btn">
-						&nbsp;&nbsp;
-						<input type="reset" value="重填">
-					</td>
-				</tr>
-			</table>
+	<body style="background:url(background.webp) no-repeat;background-size: 100% 100% ;background-attachment: fixed;">
+		<div style="margin:0 auto;width:1226px;height:2000px;">
+			<div style="margin:0 auto;width:600px;height:650px;margin-top:50px;background-color:rgba(1, 1, 1, 0.35);">
+				<br>
+				<h1 align="center" style="color:white">消费管理系统</h1><br>
+				<!-- <hr style="height:3px;color:red"> -->
+					<table style="font-size:16px;color:white;border-collapse:collapse;" align="center">
+						<tr style="width:20px;line-height:45px;">
+							<td colspan="2" align="center" style="color:white;font-size:20px;">请录入消费信息</td>
+						</tr>
+						<tr style="line-height:40px;">
+							<td align="right" >商品名称:</td>
+							<td>
+								<input type="text" name="consumeName" id="in1">
+								<span id="msg1" style="font-size:10px;color:red"></span>					
+							</td>
+						</tr>
+						<tr style="line-height:40px;">
+							<td align="right" width="100px">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格:</td>
+							<td width="280px">
+								<input type="text" name="consumePrice" id="in2"> 
+								<span id="msg2" style="font-size:10px;color:red">(单位:元)</span>
+							</td>
+						</tr>
+						<tr style="line-height:40px;">
+							<td align="right">数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量:</td>
+							<td>
+								<input type="number" name="consumeCount" id="in3">
+								<span id="msg3" style="font-size:10px;color:red"></span>
+							</td>
+						</tr>
+						<tr style="line-height:40px;">
+							<td align="right">消费类型:</td>
+							<td>
+								<select name="consumeType" style="width:170px;" id="in4">
+									<option value="生活消费" selected>生活消费</option>
+									<option value="百货消费">百货消费</option>
+									<option value="日常消费">日常消费</option>
+								</select>
+								<span id="msg4"></span>
+							</td>
+						</tr>
+						<tr style="line-height:40px;">
+							<td align="right">消费日期:</td>
+							<td>
+								<input type="date" name="consumeDate" style="width:165px;" id="in5">
+								<span id="msg5" style="font-size:10px;color:red"></span>
+							</td>
+						</tr>
+						<tr style="line-height:38px;">
+							<td align="right">备注信息:</td>
+							<td>
+								<textarea name="remark" id="in6" cols="22.5" rows="1" style="resize:none;vertical-align:middle;"></textarea>
+							</td>
+						</tr>
+						<tr style="line-height:60px;">
+							<td colspan="2" align="center">
+								<input type="submit" value="录入" id="btn" style="width:72px">
+								&nbsp;&nbsp;
+								<input type="reset" value="重填" style="width:72px">
+							</td>
+						</tr>
+					</table>
+			</div>
+		</div>
+		
 		<script>
 			
 			//非空验证
@@ -82,13 +88,19 @@
 			
 			//提交验证 把表单的值传给接口,提交成功跳转到查询页面
 			btn.onclick=function(){
-				alert("插入成功")
+				//输入数据非空验证 if
 				var n=in1.value
 				var p=in2.value
 				var c=in3.value
 				var t=in4.value
 				var d=in5.value
 				var r=in6.value
+				if(!n || !p || !c || !t || !r){
+					alert("插入失败")
+					return
+				}else{
+					alert("插入成功")
+				}
 				var data=`consumeName=${n}&consumePrice=${p}&consumeCount=${c}&consumeType=${t}&consumeDate=${d}&remark=${r}`
 				var xhr=new XMLHttpRequest()
 				xhr.open("POST","/v2/product/add")
