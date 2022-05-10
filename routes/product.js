@@ -18,14 +18,30 @@ router.post("/add",(req,res)=>{
 })
 //查询数据
 router.get("/select",(req,res)=>{
-	const m="select * from consumeInfo"
+	const m="select * from consumeInfo order by consumeId desc"
 	pool.query(m,(err,result)=>{
 		if(err){
 			throw err
 			res.send({code:201,msg:"查询数据失败"})
 			return
+		}
+		res.send(result)	
+	})	
+})
+//删除数据
+router.delete("/del",(req,res)=>{
+	var m=req.query.consumeId
+	m=parseInt(m)
+	const n="delete from consumeInfo where consumeId=?"
+	pool.query(n,[m],(err,result)=>{
+		if(err){
+			throw err
+			return
+		}
+		if(result.affectedRows>0){
+			res.send({code:200,msg:"删除数据成功"})
 		}else{
-			res.send(result)
+			res.send({code:201,msg:"删除失败"})
 		}
 	})
 })

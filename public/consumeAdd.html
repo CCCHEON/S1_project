@@ -7,7 +7,6 @@
 	<body>
 		<h4 align="center">消费管理系统</h4>
 		<hr>
-		<form method="post" action="rec">
 			<table border="1px" style="border-collapse:collapse" align="center">
 				<tr>
 					<td colspan="2" align="center" style="color:blue">请录入消费信息</td>
@@ -37,9 +36,9 @@
 					<td align="right">消费类型:</td>
 					<td>
 						<select name="consumeType" style="width:170px;" id="in4">
-							<option value="1" selected>生活消费</option>
-							<option value="2">百货消费</option>
-							<option value="3">日常消费</option>
+							<option value="生活消费" selected>生活消费</option>
+							<option value="百货消费">百货消费</option>
+							<option value="日常消费">日常消费</option>
 						</select>
 						<span id="msg4"></span>
 					</td>
@@ -59,52 +58,38 @@
 				</tr>
 				<tr>
 					<td colspan="2" align="center">
-						<input type="button" value="录入" id="btn">
+						<input type="submit" value="录入" id="btn">
 						&nbsp;&nbsp;
 						<input type="reset" value="重填">
 					</td>
 				</tr>
 			</table>
-		</form>
 		<script>
 			
 			//非空验证
 			in1.onblur=function(){
-				if(in1.value===""){
-					msg1.innerHTML="商品名称不能为空!"
-				}else{
-					msg1.innerHTML=null
-				}
+				!in1.value ? msg1.innerHTML="商品名称不能为空!" : msg1.innerHTML=null
 			}
 			in2.onblur=function(){
-				if(in2.value===""){
-					msg2.innerHTML="价格不能为空!"
-				}else{
-					msg2.innerHTML=null
-				}
+				!in2.value ? msg2.innerHTML="价格不能为空!" : msg2.innerHTML=null
 			}
 			in3.onblur=function(){
-				if(in3.value===""){
-					msg3.innerHTML="数量不能为空!"
-				}else{
-					msg3.innerHTML=null
-				}
+				!in3.value ? msg3.innerHTML="数量不能为空!" : msg3.innerHTML=null
 			}
 			in5.onblur=function(){
-				if(in5.value===""){
-					msg5.innerHTML="消费日期不能为空!"
-				}else{
-					msg5.innerHTML=null
-				}
+				!in5.value ? msg5.innerHTML="消费日期不能为空!" : msg5.innerHTML=null
 			}
 			
 			//提交验证 把表单的值传给接口,提交成功跳转到查询页面
 			btn.onclick=function(){
-				if(in1.length<0 || in2.length<0 || in3.length<0 || in4.length<0 || in5.length<0){
-					alert("录入失败")
-				}else{
-					alert("录入成功")
-				}
+				alert("插入成功")
+				var n=in1.value
+				var p=in2.value
+				var c=in3.value
+				var t=in4.value
+				var d=in5.value
+				var r=in6.value
+				var data=`consumeName=${n}&consumePrice=${p}&consumeCount=${c}&consumeType=${t}&consumeDate=${d}&remark=${r}`
 				var xhr=new XMLHttpRequest()
 				xhr.open("POST","/v2/product/add")
 				xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded;charset=UTF-8')
@@ -112,7 +97,7 @@
 					console.log(xhr.responseText)
 					window.location.href="http://127.0.0.1:3000/consumeInfo.html"
 				}
-				xhr.send()
+				xhr.send(data)
 			}		
 		</script>
 	</body>

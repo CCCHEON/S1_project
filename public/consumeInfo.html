@@ -7,24 +7,70 @@
 	<body>
 		<h3 style="text-align:center;">消费管理系统</h3>
 		<hr>
+		<div style="text-align:center;">
 		<span style="text-align:center">消费记录查询</span>
 			<span>[<span>
 			<a href="./consumeAdd.html">录入消费信息</a>
-			<span>]<span><br>
-			<span id="msg">消费信息查询中...</span>
+			<span>]<span><br>			
+		</div>
+
+		<span id="msg">消费信息查询中...</span>
 		<script>
 			//页面即将span语句替换成查询的所有商品数据,并渲染成表格    改为window.onload
 			window.onload=function(){
+				show()				
+			}
+			function show(){
 				const xhr=new XMLHttpRequest()
 				xhr.open("GET","/v2/product/select")
-				xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded;charset=UTF-8')
 				xhr.onload=function(){
 					let result=xhr.responseText
 					//验证result的值
 					//console.log(result)
-					msg.innerHTML=result
-					
-					//将查询到的数据渲染成表格
+					//遍历查询的结果,并渲染成表格
+					var arr=JSON.parse(result)
+					var str=`<table border="1px" border-color="black" align="center">
+								<tr>
+									<th>编号</th>
+									<th>商品名称</th>
+									<th>价格(元)</th>
+									<th>数量</th>
+									<th>总金额</th>
+									<th>消费类型</th>
+									<th>日期</th>
+									<th colspan="2">操作</th>
+								</tr>`
+					for(var i=0;i<arr.length;i++){
+						 str+=`<tr>
+									<td>${arr[i].consumeId}</td>
+									<td>${arr[i].consumeName}</td>
+									<td>${arr[i].consumePrice}</td>
+									<td>${arr[i].consumeCount}</td>
+									<td>${arr[i].consumePrice*arr[i].consumeCount}</td>
+									<td>${arr[i].consumeType}</td>
+									<td>${arr[i].consumeDate}</td>
+									<td><a href="javascript:edit(${arr[i].consumeId})">修改</a></td>
+									<td><a href="javascript:del(${arr[i].consumeId})">删除</a></td>
+							   </tr>`
+					};
+					str+=`</table>`	
+					msg.innerHTML=str
+				}
+				xhr.send()
+			}
+			function del(consumeId){
+				const xhr=new XMLHttpRequest()
+				xhr.open("DELETE","/v2/product/del?consumeId="+consumeId)
+				xhr.onload=function(){
+					show()
+				}
+				xhr.send()
+			}
+			function edit(consumeId){
+				const xhr=new XMLHttpRequest()
+				xhr.open("PUT","/v2/product/add")
+				xhr.onload=function(){
+					window.location.href="http://127.0.0.1:3000/consumeAdd.html"
 				}
 				xhr.send()
 			}
