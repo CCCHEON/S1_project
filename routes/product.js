@@ -4,16 +4,16 @@ const router=express.Router()
 module.exports=router
 //插入数据
 router.post("/add",(req,res)=>{
-	//res.send("插入数据成功")
 	const m=req.body
 	console.log(m)
 	const n="insert into consumeInfo set ?"
 	pool.query(n,[m],(err,result)=>{
 		if(err){
 			throw err
-			res.send({code:201,msg:"插入数据失败"})
+			res.send("插入数据失败")
 			return
-		}else{res.send({code:200,msg:"插入数据成功"})}
+		}
+		result.affectedRows>0 ? res.send("插入数据成功") : res.send("插入数据失败")
 	})
 })
 //查询数据
@@ -22,7 +22,7 @@ router.get("/select",(req,res)=>{
 	pool.query(m,(err,result)=>{
 		if(err){
 			throw err
-			res.send({code:201,msg:"查询数据失败"})
+			res.send("查询数据失败")
 			return
 		}
 		res.send(result)	
@@ -38,10 +38,19 @@ router.delete("/del",(req,res)=>{
 			throw err
 			return
 		}
-		if(result.affectedRows>0){
-			res.send({code:200,msg:"删除数据成功"})
-		}else{
-			res.send({code:201,msg:"删除失败"})
+		result.affectedRows>0 ? res.send("删除数据成功") : res.send("删除失败")
+	})
+})
+//修改数据
+router.put("/update",(req,res)=>{
+	var m=req.body
+	console.log(m)
+	const n="update consumeInfo set ? where consumeId=?"
+	pool.query(n,[m,m.consumeId],(err,result)=>{
+		if(err){
+			throw err
+			return
 		}
+		result.affectedRows>0 ? res.send("修改数据成功") : res.send("修改数据失败")
 	})
 })

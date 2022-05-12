@@ -3,25 +3,56 @@
 	<head>
 		<meta charset="utf-8">
 		<title>消费记录查询</title>
+		<style>
+			body{
+				background:url(background.webp) no-repeat;
+				background-size: 100% 100% ;
+				background-attachment: fixed;
+				background-position: center center;
+				-webkit-background-size: cover;
+			}
+			h1{
+				text-align:center;
+				color:white;
+			}
+			.head{
+				font-size:20px;
+				margin:0 auto;
+				color: #ffffff ;
+				text-align:center;
+				width:900px;height:40px;
+			}
+			.pageBody{
+				margin: 0 auto;
+				text-align: center;
+				width: 900px;
+				color: #ffffff;
+				background-color: rgba(156,158, 150, 0.35);
+			}
+			.pageBody:hover{
+				background-color: rgba(156,158, 150, 0.5);
+			}
+			table{border-collapse: collapse;width: 600px;}
+			tr{line-height: 30px}
+		</style>
 	</head>
-	<body style="background:url(background.webp) no-repeat;background-size: 100% 100% ;background-attachment: fixed;">
-		<h1 style="text-align:center;color:white">消费管理系统</h1>
-		
-		<div style="font-size:20px;margin:0 auto;text-align:center;width:900px;height:40px;">
-		<span style="align:center;color:white">消费记录查询</span>
+	<body>
+		<h1>消费管理系统</h1>
+		<div class="head">
+			<span style="align:center;">消费记录查询</span>
 			<span>[<span>
 			<a href="./consumeAdd.html">录入消费信息</a>
 			<span>]<span><br>		
 		</div>
 		<hr width="900px">
-		<div style="margin:0 auto;text-align:center;width:900px;background-color:rgba(156,158, 150, 0.35);">
+		<div class="pageBody">
 			<br>
-			<span id="msg" style="color:white">消费信息查询中...</span>		
+			<span id="msg">消费信息查询中...</span>		
 			<br>
 		</div>
 
 		<script>
-			//页面即将span语句替换成查询的所有商品数据,并渲染成表格    改为window.onload
+			//页面加载完成立即将span语句替换成查询的所有商品数据,并渲染成表格
 			window.onload=function(){
 				show()				
 			}
@@ -30,23 +61,21 @@
 				xhr.open("GET","/v2/product/select")
 				xhr.onload=function(){
 					let result=xhr.responseText
-					//验证result的值
-					//console.log(result)
 					//遍历查询的结果,并渲染成表格
 					var arr=JSON.parse(result)
-					var str=`<table border="1px" border-color="black" align="center" style="border-collapse:collapse">
-								<tr style="line-height:30px">
+					var html=`<table border="2px solid #000000" align="center">
+								<tr>
 									<th>编号</th>
 									<th>商品名称</th>
 									<th>价格(元)</th>
 									<th>数量</th>
 									<th>总金额</th>
-									<th>消费类型</th>
+									<th height="40px">消费类型</th>
 									<th>日期</th>
 									<th colspan="2">操作</th>
 								</tr>`
 					for(var i=0;i<arr.length;i++){
-						 str+=`<tr>
+						 html+=`<tr>
 									<td>${arr[i].consumeId}</td>
 									<td>${arr[i].consumeName}</td>
 									<td>${arr[i].consumePrice}</td>
@@ -54,12 +83,12 @@
 									<td>${arr[i].consumePrice*arr[i].consumeCount}</td>
 									<td>${arr[i].consumeType}</td>
 									<td>${arr[i].consumeDate}</td>
-									<td><a href="javascript:edit(${arr[i].consumeId})">修改</a></td>
+									<td><a href="./consumeEdit.html?consumeId=${arr[i].consumeId}">修改</a></td>
 									<td><a href="javascript:del(${arr[i].consumeId})">删除</a></td>
 							   </tr>`
 					};
-					str+=`</table>`	
-					msg.innerHTML=str
+					html+=`</table>`	
+					msg.innerHTML=html
 				}
 				xhr.send()
 			}
@@ -67,15 +96,8 @@
 				const xhr=new XMLHttpRequest()
 				xhr.open("DELETE","/v2/product/del?consumeId="+consumeId)
 				xhr.onload=function(){
+					if(confirm("确认删除?"))
 					show()
-				}
-				xhr.send()
-			}
-			function edit(consumeId){
-				const xhr=new XMLHttpRequest()
-				xhr.open("PUT","/v2/product/add")
-				xhr.onload=function(){
-					window.location.href="http://127.0.0.1:3000/consumeAdd.html"
 				}
 				xhr.send()
 			}
