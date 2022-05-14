@@ -47,7 +47,7 @@
 				<form>
 					<table align="center">
 						<tr style="width:20px;line-height:45px;">
-							<td colspan="2" align="center" style="color:white;font-size:20px;">请录入消费信息</td>
+							<td colspan="2" align="center" style="color:white;font-size:20px;">请修改消费信息</td>
 						</tr>
 						<tr>
 							<td align="right">商品名称:</td>
@@ -97,7 +97,7 @@
 						</tr>
 						<tr style="line-height:60px;">
 							<td colspan="2" align="center">
-								<input type="button" value="录入" id="btn" style="width:72px">
+								<input type="button" value="修改" id="btn" style="width:72px">
 								&nbsp;&nbsp;
 								<input type="reset" value="重填" style="width:72px">
 							</td>
@@ -108,7 +108,10 @@
 		</div>
 		
 		<script>
-			
+			//页面加载完成回显指定id的值
+			window.onload=function(){
+				reshow(ii)
+			}
 			//非空验证
 			in1.onblur=function(){
 				!in1.value ? msg1.innerHTML="商品名称不能为空!" : msg1.innerHTML=null
@@ -123,7 +126,10 @@
 				!in5.value ? msg5.innerHTML="消费日期不能为空!" : msg5.innerHTML=null
 			}
 			
-			//提交验证 把表单的值传给接口,提交成功跳转到查询页面
+			var i=window.location.href
+			var ii=i.split("=")[1]
+			
+			//提交验证 把键入的值传给接口,提交成功跳转到首页页面
 			btn.onclick=function(){
 				//输入数据非空验证 if
 				var n=in1.value
@@ -138,8 +144,7 @@
 				}else{
 					alert("插入成功")
 				}
-				var i=window.location.href
-				var ii=i.split("=")[1]
+
 				var data=`consumeId=${ii}&consumeName=${n}&consumePrice=${p}&consumeCount=${c}&consumeType=${t}&consumeDate=${d}&remark=${r}`
 				var xhr=new XMLHttpRequest()
 				xhr.open("PUT","/v2/product/update")
@@ -154,6 +159,24 @@
 				}
 				xhr.send(data)
 			}	
+			//查询用户要修改的id值对应的数据并回显到修改页面
+			function reshow(){
+				const xhr=new XMLHttpRequest()
+				xhr.open("GET","/v2/product/reselect?consumeId="+ii)
+				xhr.onload=function(){
+					console.log(xhr.responseText)
+					let arr=JSON.parse(xhr.responseText)
+					console.log(arr)
+					console.log(arr.data[0].consumeName)
+					in1.value=arr.data[0].consumeName
+					in2.value=arr.data[0].consumePrice
+					in3.value=arr.data[0].consumeCount
+					in4.value=arr.data[0].consumeType
+					in5.value=arr.data[0].consumeDate
+					in6.value=arr.data[0].remark
+				}
+				xhr.send()	
+			}
 		</script>
 	</body>
 </html>

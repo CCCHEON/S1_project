@@ -54,3 +54,16 @@ router.put("/update",(req,res)=>{
 		result.affectedRows>0 ? res.send("修改数据成功") : res.send("修改数据失败")
 	})
 })
+//查询指定id的数据
+router.get("/reselect",(req,res)=>{
+	const n=req.query.consumeId
+	const m="select * from consumeInfo where consumeId=?"
+	pool.query(m,n,(err,result)=>{
+		if(err){
+			throw err
+			res.send({code:201,msg:"查询数据失败"})
+			return
+		}
+		res.send({code:200,msg:"查询成功",data:result})	
+	})	
+})
